@@ -60,7 +60,9 @@ class Settings:
             else:
                 # No loader found -> use the Settings default value
                 self._lookups[key] = SecretScanner(
-                    lambda: default, self.secrets_managers
+                    # Build a closure for current value of default
+                    (lambda d: lambda: d)(default),
+                    self.secrets_managers,
                 )
 
         self._init = True

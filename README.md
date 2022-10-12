@@ -17,7 +17,19 @@ Common hierarchy of lookups, first defined will be used:
 3. os.environ
 4. Settings['key']
 
-Any value found that is surrounded by `%%` will be fetched from credstash (if installed).
+Any value found that is surrounded by `%%` will be processed by the configured
+`secrets_managers`.
+
+Settings values are assumed to be dynamic, Settings objects use callables to
+retrieve the values at run time. This means specifically that changes in the
+Constance admin will apply to any look ups made after the values are saved.
+
+Secrets (at least in the `CredstashManager`) are assumed to be immutable. A
+`functools.lru_cache` is used around the lookup for cost and performance. If
+you have rotated the credentials (or need to reset the cache in tests) you can
+call `flush_secret_cache` on your `CredstashManager` instance to reset the
+`lru_cache`. This means a value of `%%secret%%` will look up the secured value
+one time and cache it in memory until `flush_secret_cache` is called.
 
 ## Usage
 
