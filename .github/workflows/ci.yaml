@@ -1,6 +1,6 @@
 name: Run Tox
 
-on: push
+on: pull_request
 
 jobs:
   build:
@@ -35,3 +35,10 @@ jobs:
           pip install tox
       - name: run tox
         run: tox
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
+          junitxml-path: ./pytest.xml
+          remove-link-from-badge: true
