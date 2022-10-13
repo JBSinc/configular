@@ -1,0 +1,37 @@
+name: Run Tox
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: python:${{ matrix.python-version }}-alpine
+
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+
+    services:
+      redis:
+        image: redis:alpine
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      REDIS_HOST: redis
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: install system dependencies
+        run: |
+          apk add --no-cache libffi-dev build-base
+      - name: install python dependencies
+        run: |
+          pip install -U pip
+          pip install tox
+      - name: run tox
+        run: tox
