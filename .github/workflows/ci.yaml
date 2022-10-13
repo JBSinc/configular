@@ -5,7 +5,10 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python-version }}-alpine
+    container:
+      image: python:${{ matrix.python-version }}-alpine
+      volumes:
+        - /github/home/.cache/pip:/github/home/.cache/pip
 
     strategy:
       matrix:
