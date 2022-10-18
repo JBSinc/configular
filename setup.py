@@ -65,6 +65,9 @@ setup(
         "django": ["Django>=2.2,<4"],
         "test": test_requires,
     },
-    use_scm_version=True,
+    use_scm_version={
+        # PyPi doesn't allow local versions
+        "local_scheme": "no-local-version",
+    },
     setup_requires=["setuptools_scm"],
 )
