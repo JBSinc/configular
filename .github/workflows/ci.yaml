@@ -1,15 +1,18 @@
 name: Run Tox
 
-on: push
+on: pull_request
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python-version }}-alpine
+    container:
+      image: python:${{ matrix.python-version }}-alpine
+      volumes:
+        - /github/home/.cache/pip:/github/home/.cache/pip
 
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: ["3.8", "3.9", "3.10"]
 
     services:
       redis:
@@ -25,13 +28,25 @@ jobs:
       REDIS_HOST: redis
 
     steps:
-      - uses: actions/checkout@v3
       - name: install system dependencies
         run: |
-          apk add --no-cache libffi-dev build-base
+          apk add --no-cache libffi-dev build-base git
+
+      - uses: actions/checkout@v2.5.0
+        with:
+          fetch-depth: 0
+
       - name: install python dependencies
         run: |
           pip install -U pip
           pip install tox
+
       - name: run tox
         run: tox
+
+      - name: Pytest coverage comment
+        uses: MishaKav/pytest-coverage-comment@main
+        with:
+          pytest-xml-coverage-path: ./coverage.xml
+          junitxml-path: ./pytest.xml
+          remove-link-from-badge: true

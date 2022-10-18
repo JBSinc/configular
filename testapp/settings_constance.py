@@ -29,3 +29,5 @@ CONSTANCE_REDIS_CONNECTION = {
     "port": 6379,
     "db": 0,
 }
+
+CONSTANCE_REDIS_PREFIX = os.environ.get("TOX_ENV_NAME", "not_tox")

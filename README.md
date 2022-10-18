@@ -33,8 +33,7 @@ one time and cache it in memory until `flush_secret_cache` is called.
 
 ## Usage
 
-e.g.
-```
+```python
 from configular import Settings
 from configular.constance_loader import ConstanceLoader
 from configular.credstash_manager import CredstashManager
@@ -57,7 +56,6 @@ loader_settings = Settings(
 
 Django settings must be defined in a dict named with the defined prefix
 
-e.g.
 ```python
 TEST_PREFIX = {'A_SETTING': 'NEW_VALUE'}
 ```
@@ -65,7 +63,6 @@ TEST_PREFIX = {'A_SETTING': 'NEW_VALUE'}
 [Constance](https://github.com/jazzband/django-constance) settings must be named
 with the prefix leading followed by an underscore, e.g.
 
-e.g.
 ```python
 CONSTANCE_CONFIG = {
     'TEST_PREFIX_A_SETTING': (True, 'A fine setting'),
@@ -75,7 +72,6 @@ CONSTANCE_CONFIG = {
 A sublcass of `django.core.exceptions.ImproperlyConfigured` is provided that can be
 used to enforce configuration during app startup.
 
-e.g.
 ```python
 from configular.exceptions import ImproperlyConfigured
 

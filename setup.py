@@ -39,11 +39,11 @@ else:
 
 setup(
     name="configular",
-    version="1.0.0",
     packages=["configular"],
     include_package_data=True,
     description="Support hierarchical loading of applications settings from a number of sources.",
     long_description=README,
+    long_description_content_type="text/markdown",
     author="Aaron McMillin",
     author_email="amcmillin@jbssolutions.com",
     classifiers=[
@@ -54,7 +54,6 @@ setup(
         "Framework :: Django",
         "License :: OSI Approved :: ISC License (ISCL)",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
@@ -66,4 +65,9 @@ setup(
         "django": ["Django>=2.2,<4"],
         "test": test_requires,
     },
+    use_scm_version={
+        # PyPi doesn't allow local versions
+        "local_scheme": "no-local-version",
+    },
+    setup_requires=["setuptools_scm"],
 )
