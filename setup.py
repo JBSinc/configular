@@ -39,7 +39,6 @@ else:
 
 setup(
     name="configular",
-    version="1.0.0",
     packages=["configular"],
     include_package_data=True,
     description="Support hierarchical loading of applications settings from a number of sources.",
@@ -66,4 +65,6 @@ setup(
         "django": ["Django>=2.2,<4"],
         "test": test_requires,
     },
+    use_scm_version=True,
+    setup_requires=["setuptools_scm"],
 )

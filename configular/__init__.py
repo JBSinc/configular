@@ -1,8 +1,17 @@
 import logging
 import re
+from importlib.metadata import PackageNotFoundError, version
 from typing import List
 
 from .base_secret_manager import BaseSecretManager
+
+try:
+    __version__ = version("configular")
+except PackageNotFoundError:
+    # package is not installed
+    __version__ = "Unknown"
+    pass
+
 
 logger = logging.getLogger(__name__)
 
