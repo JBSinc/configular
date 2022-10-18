@@ -28,10 +28,13 @@ jobs:
       REDIS_HOST: redis
 
     steps:
-      - uses: actions/checkout@v3
       - name: install system dependencies
         run: |
-          apk add --no-cache libffi-dev build-base
+          apk add --no-cache libffi-dev build-base git
+
+      - uses: actions/checkout@v2.5.0
+        with:
+          fetch-depth: 0
 
       - name: install python dependencies
         run: |
