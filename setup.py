@@ -43,6 +43,7 @@ setup(
     include_package_data=True,
     description="Support hierarchical loading of applications settings from a number of sources.",
     long_description=README,
+    long_description_content_type="text/markdown",
     author="Aaron McMillin",
     author_email="amcmillin@jbssolutions.com",
     classifiers=[
