@@ -17,16 +17,22 @@ settings_kwargs = {
 }
 
 
-@pytest.mark.skipif(
-    os.environ.get("DJANGO_SETTINGS_MODULE", "") != "settings",
-    reason="requires constance to be uninstalled when calling django.setup()",
-)
-def test_settings_load_without_constance():
+def test_settings_load_without_constance(settings):
+    # GIVEN config with all loaders
     loader_settings = Settings(
-        {"A_SETTING": "DEFAULT"}, "TEST_PREFIX", **settings_kwargs
+        {"THE_ANSWER": "DEFAULT"}, "TEST_PREFIX", **settings_kwargs
     )
 
-    assert loader_settings.A_SETTING == "DEFAULT"
+    assert loader_settings.THE_ANSWER == settings.THE_ANSWER
+    assert settings.THE_ANSWER != "DEFAULT"
+
+    # WHEN reconfigured without constance
+    loader_settings.reconfigure(
+        loaders=[DjangoLoader, EnvironLoader],
+    )
+
+    # THEN the default value is show
+    assert loader_settings.THE_ANSWER == "DEFAULT"
 
 
 def test_django_settings(settings):
@@ -215,6 +221,21 @@ class TestWithCredstash:
         loader_settings = Settings({"FISH": "thanks"}, "TEST_PREFIX", **settings_kwargs)
 
         assert loader_settings.FISH == "goodbye"
+
+    def test_django_settings_no_secrets(self, credstash, settings):
+        # GIVEN normal config, with a secret
+        credstash.putSecret("fish", "goodbye")
+        settings.TEST_PREFIX = {"FISH": "%%fish%%"}
+        loader_settings = Settings({"FISH": "thanks"}, "TEST_PREFIX", **settings_kwargs)
+
+        # WHEN retrieved
+        # THEN the secret value is found
+        assert loader_settings.FISH == "goodbye"
+
+        # WHEN reconfigured without a secret manager
+        # THEN the key is found
+        loader_settings.reconfigure(secrets_managers=[])
+        assert loader_settings.FISH == "%%fish%%"
 
     def test_environ_value(self, credstash, monkeypatch):
         credstash.putSecret("fish", "goodbye")

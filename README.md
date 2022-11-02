@@ -52,6 +52,22 @@ loader_settings = Settings(
 )
 ```
 
+To update the `loaders` and `secrets_managers` in a settings instance, call
+`reconfigure`.
+
+```python
+from configular.credstash_manager import CredstashManager
+from configular.django_loader import DjangoLoader
+from configular.environ_loader import EnvironLoader
+
+from myapp.conf import myapp_settings
+
+myapp_settings.reconfigure(
+    loaders=[DjangoLoader, EnvironLoader],
+    secrets_managers=[CM],
+)
+```
+
 ### Configuration
 
 Django settings must be defined in a dict named with the defined prefix
