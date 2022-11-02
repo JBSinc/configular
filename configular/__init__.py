@@ -29,12 +29,13 @@ class Settings:
         loaders: List[type] = None,
         secrets_managers: List[BaseSecretManager] = None,
     ):
-        self.loaders = loaders or []
-        self.secrets_managers = secrets_managers or []
         self.defaults = defaults
         self.prefix = prefix
-        self._lookups = {}
-        self._init = False
+
+        self.reconfigure(
+            loaders=loaders or [],
+            secrets_managers=secrets_managers or [],
+        )
 
     def reconfigure(
         self,
